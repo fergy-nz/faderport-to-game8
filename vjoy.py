@@ -1,6 +1,6 @@
 # Python wrapper on vJoy library
 from _ctypes import byref
-from ctypes import cdll, c_bool, c_short, c_char_p, c_wchar_p, c_int, c_long, c_uint, c_ubyte
+from ctypes import cdll, c_bool, c_short, c_wchar_p, c_int, c_long, c_uint, c_ubyte
 from enum import Enum
 
 import time
@@ -28,7 +28,7 @@ class VJoy(object):
     def __init__(self):
         self._vjoy = cdll.LoadLibrary('vjoyinterface')
 
-        # VJOYINTERFACE_API BOOL	__cdecl vJoyEnabled(void);
+        # VJOYINTERFACE_API BOOL __cdecl vJoyEnabled(void);
         self.vJoyEnabled = self._vjoy.vJoyEnabled
         self.vJoyEnabled.argtypes = None
         self.vJoyEnabled.restype = c_bool
@@ -38,49 +38,48 @@ class VJoy(object):
         self.GetvJoyVersion.argtypes = None
         self.GetvJoyVersion.restype = c_short
 
-        # VJOYINTERFACE_API PVOID	__cdecl	GetvJoyProductString(void);
+        # VJOYINTERFACE_API PVOID __cdecl GetvJoyProductString(void);
         self.GetvJoyProductString = self._vjoy.GetvJoyProductString
         self.GetvJoyProductString.argtypes = None
         self.GetvJoyProductString.restype = c_wchar_p
 
-        # VJOYINTERFACE_API PVOID	__cdecl	GetvJoyManufacturerString(void);
+        # VJOYINTERFACE_API PVOID __cdecl GetvJoyManufacturerString(void);
         self.GetvJoyManufacturerString = self._vjoy.GetvJoyManufacturerString
         self.GetvJoyManufacturerString.argtypes = None
         self.GetvJoyManufacturerString.restype = c_wchar_p
 
-        # VJOYINTERFACE_API PVOID	__cdecl	GetvJoySerialNumberString(void);
+        # VJOYINTERFACE_API PVOID __cdecl GetvJoySerialNumberString(void);
         self.GetvJoySerialNumberString = self._vjoy.GetvJoySerialNumberString
         self.GetvJoySerialNumberString.argtypes = None
         self.GetvJoySerialNumberString.restype = c_wchar_p
 
-        # VJOYINTERFACE_API VOID	__cdecl	RegisterRemovalCB(RemovalCB cb, PVOID data);
+        # VJOYINTERFACE_API VOID __cdecl RegisterRemovalCB(RemovalCB cb, PVOID data);
 
-        # VJOYINTERFACE_API BOOL		__cdecl	AcquireVJD(UINT rID); # Acquire the specified vJoy Device.
+        # VJOYINTERFACE_API BOOL __cdecl AcquireVJD(UINT rID);
         self.AcquireVJD = self._vjoy.AcquireVJD
         self.AcquireVJD.argtypes = [c_int, ]
         self.AcquireVJD.restype = c_bool
 
-        # VJOYINTERFACE_API VOID		__cdecl	RelinquishVJD(UINT rID); # Relinquish the specified vJoy Device.
+        # VJOYINTERFACE_API VOID __cdecl RelinquishVJD(UINT rID);
         self.RelinquishVJD = self._vjoy.RelinquishVJD
         self.RelinquishVJD.argtypes = [c_int, ]
         self.RelinquishVJD.restype = c_bool
 
-        # VJOYINTERFACE_API BOOL __cdecl SetAxis(LONG Value, UINT rID, UINT Axis);		// Write Value to a given axis defined in the specified VDJ
+        # VJOYINTERFACE_API BOOL  _cdecl SetAxis(LONG Value, UINT rID, UINT Axis);
         self.SetAxis = self._vjoy.SetAxis
         self.SetAxis.argtypes = [c_long, c_uint, c_uint]
         self.SetAxis.restype = c_bool
 
-        # VJOYINTERFACE_API BOOL __cdecl SetBtn(BOOL Value, UINT rID, UCHAR nBtn);		// Write Value to a given button defined in the specified VDJ
+        # VJOYINTERFACE_API BOOL__cdecl SetBtn(BOOL Value, UINT rID, UCHAR nBtn);
         self.SetBtn = self._vjoy.SetBtn
-        self.SetBtn.argtypes = [ c_bool, c_uint, c_ubyte]
+        self.SetBtn.argtypes = [c_bool, c_uint, c_ubyte]
         self.SetBtn.restype = c_bool
 
-        # VJOYINTERFACE_API BOOL __cdecl SetDiscPov(int Value, UINT rID, UCHAR nPov);	// Write Value to a given descrete POV defined in the specified VDJ
-        # VJOYINTERFACE_API BOOL __cdecl SetContPov(DWORD Value, UINT rID, UCHAR nPov);	// Write Value to a given continuous POV defined in the specified VDJ
+        # VJOYINTERFACE_API BOOL __cdecl SetDiscPov(int Value, UINT rID, UCHAR nPov);
+        # VJOYINTERFACE_API BOOL __cdecl SetContPov(DWORD Value, UINT rID, UCHAR nPov);
+        # VJOYINTERFACE_API BOOL __cdecl UpdateVJD(UINT rID, PVOID pData);
 
-        # VJOYINTERFACE_API BOOL		__cdecl	UpdateVJD(UINT rID, PVOID pData); # Update the position data of the specified vJoy Device.
-
-    # VJOYINTERFACE_API BOOL	__cdecl	DriverMatch(WORD * DllVer, WORD * DrvVer);
+    # VJOYINTERFACE_API BOOL __cdecl DriverMatch(WORD * DllVer, WORD * DrvVer);
     def DriverMatch(self):
         verDll = c_short()
         verDrv = c_short()
@@ -88,7 +87,7 @@ class VJoy(object):
         match = self._vjoy.DriverMatch(byref(verDll), byref(verDrv))
         return match, verDll.value, verDrv.value
 
-    # VJOYINTERFACE_API BOOL	__cdecl	vJoyFfbCap(BOOL * Supported);	// Is this version of vJoy capable of FFB?
+    # VJOYINTERFACE_API BOOL __cdecl vJoyFfbCap(BOOL * Supported);
     def vJoyFfbCap(self):
         yes = c_bool()
         ok = self._vjoy.vJoyFfbCap(byref(yes))
@@ -97,7 +96,7 @@ class VJoy(object):
         else:
             raise RuntimeError('Calling: vJoyFfbCap failed.')
 
-    # VJOYINTERFACE_API BOOL	__cdecl	GetvJoyMaxDevices(int * n);
+    # VJOYINTERFACE_API BOOL __cdecl GetvJoyMaxDevices(int * n);
     def GetvJoyMaxDevices(self):
         n = c_int()
         ok = self._vjoy.GetvJoyMaxDevices(byref(n))
@@ -106,7 +105,7 @@ class VJoy(object):
         else:
             return -1
 
-    # VJOYINTERFACE_API BOOL	__cdecl	GetNumberExistingVJD(int * n);
+    # VJOYINTERFACE_API BOOL __cdecl GetNumberExistingVJD(int * n);
     def GetNumberExistingVJD(self):
         n = c_int()
         ok = self._vjoy.GetNumberExistingVJD(byref(n))
@@ -115,7 +114,7 @@ class VJoy(object):
         else:
             return -1
 
-    # VJOYINTERFACE_API enum VjdStat	__cdecl	GetVJDStatus(UINT rID); // Get the status of the specified vJoy Device.
+    # VJOYINTERFACE_API enum VjdStat __cdecl GetVJDStatus(UINT rID);
     def GetVJDStatus(self, rID: int):
         return VjdStat(self._vjoy.GetVJDStatus(rID))
 
@@ -132,7 +131,7 @@ if __name__ == '__main__':
         print(vjoy.GetvJoySerialNumberString())
         print(f'Max devices: {vjoy.GetvJoyMaxDevices()}')
         print(f'Existing devices: {vjoy.GetNumberExistingVJD()}')
-        print(f"Force feedback {'is' if vjoy.vJoyFfbCap() else 'is nt'} enabled.")
+        print(f"Force feedback {'is' if vjoy.vJoyFfbCap() else 'is not'} enabled.")
         match, dllver, drvver = vjoy.DriverMatch()
         if match:
             print(f'DLL Version: {dllver:04x} and Driver Version: {drvver:04x} match.')
