@@ -13,9 +13,9 @@ corresponding to the active axis will be lit. As you switch between axes
 the fader will jump to the remembered position for each axis.
 
 The remaining 16 buttons are mapped as joystick buttons which you can
-then map to whatever you like.
+then map to whatever you like in your game/simulation of choice.
 
-The Pan knob is configured to act as a fine tune for the active axis.
+The Pan knob is configured to act as a fine tuner for the active axis.
 
 # Requirements
 * A Presonus [FaderPort] connected to your Windows computer.
@@ -58,6 +58,6 @@ pyinstaller --onefile --hidden-import mido.backends.rtmidi --add-binary vJoyInte
 
 [FaderPort]: https://www.presonus.com/products/faderport
 [vJoy]: http://vjoystick.sourceforge.net/site/
-[Python 3.6]: https://www.python.org/ftp/python/3.6.5/python-3.6.5.exe
+[Python 3.6]: https://www.python.org/
 [faderport-1.0.0]: https://pypi.org/project/faderport/
 [vJoyConfSampleImg]: vJoy-Configuration.png
