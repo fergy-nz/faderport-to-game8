@@ -22,8 +22,10 @@ The Pan knob is configured to act as a fine tuner for the active axis.
 * An installed [Python 3.6] interpreter.
 * [vJoy] installed with the first [vJoy] device configured as an 8 axes,
   16 button device.
-* My [faderport-1.0.0] python module installed (`pip install faderport`)
-* This faderport-to-game8 application.
+* My [faderport-1.0.1] python module installed. Use: `pip install faderport`
+
+  (This should also install the required [mido] and [python-rtmidi] modules.)
+* This faderport-to-game8 repo.
 
 # Installation
 There are two options...
@@ -42,11 +44,12 @@ pyinstaller --onefile --hidden-import mido.backends.rtmidi --add-binary vJoyInte
 1. Install [vJoy]
 2. Install [Python 3.6] - Just run the installer. I think there's an option
    to add it to your PATH, you should do that.
-3. Install the following python modules: faderport, mido, python-rtmidi
+3. Install the following python modules: [faderport-1.0.1]
    This can be done at a command prompt, using:
    '''sh
    pip install faderport mido python-rtmidi
    '''
+   This should also install the required [mid] and [python-rtmidi] modules.
 4. Download or clone the contents of this repo.
 
 # Configuration
@@ -59,5 +62,7 @@ pyinstaller --onefile --hidden-import mido.backends.rtmidi --add-binary vJoyInte
 [FaderPort]: https://www.presonus.com/products/faderport
 [vJoy]: http://vjoystick.sourceforge.net/site/
 [Python 3.6]: https://www.python.org/
-[faderport-1.0.0]: https://pypi.org/project/faderport/
+[faderport-1.0.1]: https://pypi.org/project/faderport/
+[mido]: https://pypi.org/project/mido/
+[python-rtmidi]: https://pypi.org/project/python-rtmidi/
 [vJoyConfSampleImg]: vJoy-Configuration.png
