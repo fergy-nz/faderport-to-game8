@@ -72,11 +72,14 @@ class GameFaderPort8(FaderPort):
 
             self.countdown(.5)
             self.light_on(faderButtons[self.selected])
+        else:
+            print('Could not acquire the vJoy device.\n'
+                  'Is vJoy installed and configured?\n'
+                  'Is vJoy device #1 configured for 8 axes, 16 buttons and no POVs?')
 
 
     def on_rotary(self, direction):
         """Rotary changes will fine tune the fader position."""
-
         if direction > 0:  # Clockwise
             if self.axes[self.selected][1] < 32768 - PAN_SCALE:
                 self.axes[self.selected][1] += PAN_SCALE
@@ -112,10 +115,12 @@ class GameFaderPort8(FaderPort):
 
     @property
     def x(self):
+        """Convert FaderPort units to vJoy units"""
         return (1 + self.fader) * 32
 
     @x.setter
     def x(self, value):
+        """Convert vJoy units to FaderPort units and adjust fader position."""
         self.fader = (value >> 5) - 1
 
     def on_close(self):
@@ -123,15 +128,15 @@ class GameFaderPort8(FaderPort):
         # Release the vJoy
         if self.acquired:
             vjoy.RelinquishVJD(1)
-        print('Shutting down midi2game.')
+        print('Shutting down faderport-to-game8.')
 
 
 if __name__ == '__main__':
     doc = """\
 FaderPort to Game8 — An 8 Axis, 16 button vJoy Feeder Application
+Copyright © jayferg 2018
 
-Hard coded to feed vJoy #1 which must be configured to have 8 axes and 16 buttons.
-Select axis with Mix, Proj, Trns, Undo, Shift, Punch, User or Loop buttons.
+Select axis with 'Mix', 'Proj', 'Trns', 'Undo', 'Shift', 'Punch', 'User' or 'Loop' buttons.
 Fader controls selected axis, rotary fine tunes selected axis.
 The other 16 buttons map as vJoy buttons.
 

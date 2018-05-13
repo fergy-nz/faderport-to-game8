@@ -18,7 +18,7 @@ then map to whatever you like.
 The Pan knob is configured to act as a fine tune for the active axis.
 
 # Requirements
-* A Presonus [FaderPort], connected to your Windows computer.
+* A Presonus [FaderPort] connected to your Windows computer.
 * An installed [Python 3.6] interpreter.
 * [vJoy] installed with the first [vJoy] device configured as an 8 axes,
   16 button device.
@@ -26,9 +26,33 @@ The Pan knob is configured to act as a fine tune for the active axis.
 * This faderport-to-game8 application.
 
 # Installation
-TODO
+There are two options...
+### Option A - Easy - 64 Bit Windows 10 Only
+If you're running 64 bit Windows 10 you can:
+1. Download and install [vJoy]
+2. Download and unzip this self-contained executable file.
+
+The executable was built with PyInstaller using the following command line:
+
+```sh
+pyinstaller --onefile --hidden-import mido.backends.rtmidi --add-binary vJoyInterface.dll;. faderport-to-game8.py
+```
+
+### Option B - One bit at a time - Windows 7, 8 or 10
+1. Install [Python 3.6] - Just run the installer. I think there's an option
+   to add it to your PATH, you should do that.
+2. Install [vJoy]
+3. To be continued.
+
+# Configuration
+[vJoy] must be configured with device #1 set for 8 axes, 16 buttons and
+0 POVs. On my machine it looks like this:
+
+![Sample vJoy Configuration Image][vJoyConfSampleImg]
+
 
 [FaderPort]: https://www.presonus.com/products/faderport
 [vJoy]: http://vjoystick.sourceforge.net/site/
 [Python 3.6]: https://www.python.org/ftp/python/3.6.5/python-3.6.5.exe
 [faderport-1.0.0]: https://pypi.org/project/faderport/
+[vJoyConfSampleImg]: vJoy-Configuration.png

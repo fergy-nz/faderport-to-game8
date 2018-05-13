@@ -58,3 +58,5 @@ build/
 dist/
 *.egg-info/
 .eggs/
+
+Support/
