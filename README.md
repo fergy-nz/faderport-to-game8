@@ -39,10 +39,15 @@ pyinstaller --onefile --hidden-import mido.backends.rtmidi --add-binary vJoyInte
 ```
 
 ### Option B - One bit at a time - Windows 7, 8 or 10
-1. Install [Python 3.6] - Just run the installer. I think there's an option
+1. Install [vJoy]
+2. Install [Python 3.6] - Just run the installer. I think there's an option
    to add it to your PATH, you should do that.
-2. Install [vJoy]
-3. To be continued.
+3. Install the following python modules: faderport, mido, python-rtmidi
+   This can be done at a command prompt, using:
+   '''sh
+   pip install faderport mido python-rtmidi
+   '''
+4. Download or clone the contents of this repo.
 
 # Configuration
 [vJoy] must be configured with device #1 set for 8 axes, 16 buttons and
