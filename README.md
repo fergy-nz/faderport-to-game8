@@ -19,38 +19,31 @@ The Pan knob is configured to act as a fine tuner for the active axis.
 
 # Requirements
 * A Presonus [FaderPort] connected to your Windows computer.
-* An installed [Python 3.6] interpreter.
 * [vJoy] installed with the first [vJoy] device configured as an 8 axes,
   16 button device.
-* My [faderport-1.0.1] python module installed. Use: `pip install faderport`
-
+* An installed [Python 3.6] interpreter.
+* My [faderport-1.0.1] python module installed. Use:
+  ```sh
+  pip install faderport
+  ```
   (This should also install the required [mido] and [python-rtmidi] modules.)
-* This faderport-to-game8 repo.
+* This *faderport-to-game8* repo.
 
 # Installation
-There are two options...
-### Option A - Easy - 64 Bit Windows 10 Only
-If you're running 64 bit Windows 10 you can:
-1. Download and install [vJoy]
-2. Download and unzip this self-contained executable file.
+There's a [video](https://youtu.be/0sSXrUWEO40) showing a full installation
+and configuration, but essentially you just:
+1. Download and Install the [FaderPort] drivers (if you haven't already)
+2. Download and Install [vJoy]
+3. Download and Install Python 3.6 (or later). Adding it to your path will
+   make it easier to run the faderport-to-game8 script later.
 
-The executable was built with PyInstaller using the following command line:
-
-```sh
-pyinstaller --onefile --hidden-import mido.backends.rtmidi --add-binary vJoyInterface.dll;. faderport-to-game8.py
-```
-
-### Option B - One bit at a time - Windows 7, 8 or 10
-1. Install [vJoy]
-2. Install [Python 3.6] - Just run the installer. I think there's an option
-   to add it to your PATH, you should do that.
-3. Install the following python modules: [faderport-1.0.1]
+4. Install the following python module: [faderport-1.0.1]
    This can be done at a command prompt, using:
-   '''sh
-   pip install faderport mido python-rtmidi
-   '''
-   This should also install the required [mid] and [python-rtmidi] modules.
-4. Download or clone the contents of this repo.
+   ```sh
+   pip install faderport
+   ```
+   This should also install the required [mido] and [python-rtmidi] modules.
+5. Download or clone the contents of this repo.
 
 # Configuration
 [vJoy] must be configured with device #1 set for 8 axes, 16 buttons and
@@ -58,6 +51,18 @@ pyinstaller --onefile --hidden-import mido.backends.rtmidi --add-binary vJoyInte
 
 ![Sample vJoy Configuration Image][vJoyConfSampleImg]
 
+# Running
+Run the script with:
+```sh
+python faderport-to-game8.py
+```
+Enjoy !!!
+
+# Disclaimer
+You use this entirely at your own risk.
+I run it on my Windows 10 Home PC and don't have any problems
+but that doesn't mean that you won't.
+Use your own judgement, the source code is right there for you to examine.
 
 [FaderPort]: https://www.presonus.com/products/faderport
 [vJoy]: http://vjoystick.sourceforge.net/site/
