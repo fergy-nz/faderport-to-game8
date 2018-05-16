@@ -60,7 +60,7 @@ Enjoy !!!
 
 # Disclaimer
 You use this entirely at your own risk.
-I run it on my Windows 10 Home PC and don't have any problems
+I run it on my Windows 10 Home PC and haven't had any problems
 but that doesn't mean that you won't.
 Use your own judgement, the source code is right there for you to examine.
 
