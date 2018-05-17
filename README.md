@@ -5,17 +5,19 @@ joystick emulation software.
 For example you could map four of the axes to throttle controls and the
 other four to propeller pitch in a multi-engine flight simulation.
 
-Obviously the [FaderPort] only has a single fader so you can only adjust
-a single axis at a time. The app remembers the current position setting
-for each of the 8 axes. You use the *Mix*, *Proj*, *Trns*, *Undo*, *Shift*,
-*Punch*, *User* and *Loop* buttons to select the active axis. The button
-corresponding to the active axis will be lit. As you switch between axes
-the fader will jump to the remembered position for each axis.
+The *Mix*, *Proj*, *Trns*, *Undo*, *Shift*, *Punch*, *User* and *Loop*
+buttons are the *axes elect buttons*. The other 16 buttons act as standard
+vJoy buttons.
 
-The remaining 16 buttons are mapped as joystick buttons which you can
-then map to whatever you like in your game/simulation of choice.
+Press the axes select button for the axis you want to control.
+If you hold several down at once you can adjust multiple axes at the same
+time. As you switch between axes the fader will jump to the remembered
+position for each axis.
 
-The Pan knob is configured to act as a fine tuner for the active axis.
+Use the fader or the Pan knob to adjust the selected axes.
+
+NOTE! Due to a quirk in the FaderPort's implementation, if you hold the
+'Off' button down the fader won't report any movement.
 
 # Requirements
 * A Presonus [FaderPort] connected to your Windows computer.
