@@ -37,11 +37,13 @@ faderButtons = [
     button_from_name("Loop"),
 ]
 
+
 class GameFaderPort8(FaderPort):
     def __init__(self):
         super().__init__()
         self.acquired = False
-        self.selected = 0
+        self.active = 0
+        self.pressed = []
         self.axes = [
             [HIDUsage.X.value, 16384],
             [HIDUsage.Y.value, 16384],
@@ -52,7 +54,6 @@ class GameFaderPort8(FaderPort):
             [HIDUsage.SL0.value, 16384],
             [HIDUsage.SL1.value, 16384],
         ]
-
 
     def on_open(self):
         # Try to acquire the vJoy
@@ -71,47 +72,73 @@ class GameFaderPort8(FaderPort):
             self.x = 16384
 
             self.countdown(.5)
-            self.light_on(faderButtons[self.selected])
+            self.light_on(faderButtons[self.active])
         else:
             print('Could not acquire the vJoy device.\n'
                   'Is vJoy installed and configured?\n'
                   'Is vJoy device #1 configured for 8 axes, 16 buttons and no POVs?')
 
-
     def on_rotary(self, direction):
         """Rotary changes will fine tune the fader position."""
         if direction > 0:  # Clockwise
-            if self.axes[self.selected][1] < 32768 - PAN_SCALE:
-                self.axes[self.selected][1] += PAN_SCALE
-                vjoy.SetAxis(self.axes[self.selected][1], 1, self.axes[self.selected][0])
+            if self.axes[self.active][1] < 32768 - PAN_SCALE:
+                value = self.axes[self.active][1] + PAN_SCALE
+            else:
+                value = 32768
+        else:  # Counter-clockwise
+            if self.axes[self.active][1] >= PAN_SCALE:
+                value = self.axes[self.active][1] - PAN_SCALE
+            else:
+                value = 0
+
+        if self.pressed:
+            for i in self.pressed:
+                self.axes[i][1] = value
+                vjoy.SetAxis(value, 1, self.axes[i][0])
         else:
-            if self.axes[self.selected][1] >= PAN_SCALE:
-                self.axes[self.selected][1] -= PAN_SCALE
-                vjoy.SetAxis(self.axes[self.selected][1], 1, self.axes[self.selected][0])
-        self.x = self.axes[self.selected][1]
+            self.axes[self.active][1] = value
+            vjoy.SetAxis(value, 1, self.axes[self.active][0])
+
+        self.x = value
 
     def on_fader(self, value):
-        self.axes[self.selected][1] = self.x
-        vjoy.SetAxis(self.x, 1, self.axes[self.selected][0])
+        if self.pressed:
+            for i in self.pressed:
+                self.axes[i][1] = self.x
+                vjoy.SetAxis(self.x, 1, self.axes[i][0])
+        else:
+            self.axes[self.active][1] = self.x
+            vjoy.SetAxis(self.x, 1, self.axes[self.active][0])
 
     def reset_vjoy_axes(self):
         for ax in self.axes:
             vjoy.SetAxis(16384, 1, ax[0])
 
     def on_fader_touch(self, state):
-        pass
+        if self.pressed and state:
+            for i in self.pressed:
+                if i != self.active:
+                    self.axes[i][1] = self.axes[self.active][1]
+                    vjoy.SetAxis(self.axes[self.active][1], 1, self.axes[self.active][0])
 
     def on_button(self, button, state):
         if button in gameButtons:
             btn = 1 + gameButtons.index(button)
             vjoy.SetBtn(state, 1, btn)
-        elif button in faderButtons and state:
+        elif button in faderButtons:
             sel = faderButtons.index(button)
-            if sel != self.selected:
-                self.light_off(faderButtons[self.selected])
-                self.x = self.axes[sel][1]
+            if state:
                 self.light_on(faderButtons[sel])
-                self.selected = sel
+                self.pressed.append(sel)
+                if self.active not in self.pressed:
+                    self.light_off(faderButtons[self.active])
+                    self.active = sel
+                    self.x = self.axes[sel][1]
+            else:
+                self.pressed.remove(sel)
+                self.active = self.pressed[0] if self.pressed else sel
+                if self.active != sel:
+                    self.light_off(faderButtons[sel])
 
     @property
     def x(self):
@@ -136,9 +163,16 @@ if __name__ == '__main__':
 FaderPort to Game8 — An 8 Axis, 16 button vJoy Feeder Application
 Copyright © jayferg 2018
 
-Select axis with 'Mix', 'Proj', 'Trns', 'Undo', 'Shift', 'Punch', 'User' or 'Loop' buttons.
-Fader controls selected axis, rotary fine tunes selected axis.
-The other 16 buttons map as vJoy buttons.
+The 'Mix', 'Proj', 'Trns', 'Undo', 'Shift', 'Punch', 'User' and 'Loop' buttons
+are the 'Axes Select Buttons'. The other 16 buttons act as standard vJoy buttons.
+
+Press the axes select button for the axis you want to control.
+If you hold several down at once you can adjust multiple axes at the same time.
+
+Use the fader or the Pan knob to adjust the selected axes.
+
+NOTE! Due to a quirk in the FaderPort's implementation, if you hold the
+'Off' button down the fader won't report any movement.
 
 Have fun and hit Ctrl-C to exit...     
 """
@@ -148,4 +182,4 @@ Have fun and hit Ctrl-C to exit...
             while True:
                 time.sleep(10)
         except KeyboardInterrupt:
-            fp.light_off(faderButtons[fp.selected])
+            pass
